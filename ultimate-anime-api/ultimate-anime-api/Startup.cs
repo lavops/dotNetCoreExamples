@@ -35,6 +35,7 @@ namespace ultimate_anime_api
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryManager();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
