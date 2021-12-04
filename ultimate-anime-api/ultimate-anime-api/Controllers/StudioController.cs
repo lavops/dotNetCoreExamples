@@ -1,4 +1,6 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,11 +16,13 @@ namespace ultimate_anime_api.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
+        private readonly IMapper _mapper;
 
-        public StudioController(IRepositoryManager repository, ILoggerManager logger)
+        public StudioController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -28,7 +32,9 @@ namespace ultimate_anime_api.Controllers
             {
                 var studios = _repository.Studio.GetAllStudios(trackChanges: false);
 
-                return Ok(studios);
+                var studiosDto = _mapper.Map<IEnumerable<StudioDto>>(studios);
+
+                return Ok(studiosDto);
             } catch(Exception ex)
             {
                 _logger.LogError($"Something went wrong in the {nameof(GetStudios)} action {ex}");
