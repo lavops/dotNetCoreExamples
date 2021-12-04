@@ -39,3 +39,6 @@ msbuild.wrn
 # Logger
 internal_logs/
 logs/
+
+# WorkingDir
+workingDir/
