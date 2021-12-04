@@ -28,21 +28,13 @@ namespace ultimate_anime_api.Controllers
         [HttpGet]
         public IActionResult GetStudios()
         {
-            try
-            {
-                var studios = _repository.Studio.GetAllStudios(trackChanges: false);
+            var studios = _repository.Studio.GetAllStudios(trackChanges: false);
 
-                var studiosDto = _mapper.Map<IEnumerable<StudioDto>>(studios);
+            var studiosDto = _mapper.Map<IEnumerable<StudioDto>>(studios);
 
-                return Ok(studiosDto);
-            } catch(Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetStudios)} action {ex}");
+            throw new Exception("Exception");
 
-                return StatusCode(500, "Internal server error");
-            }
+            return Ok(studiosDto);
         }
-
-
     }
 }
