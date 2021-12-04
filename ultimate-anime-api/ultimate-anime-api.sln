@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ultimate-anime-api", "ultimate-anime-api\ultimate-anime-api.csproj", "{481D00DE-9584-47EC-9918-D8D9CF4E965A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ultimate-anime-api", "ultimate-anime-api\ultimate-anime-api.csproj", "{481D00DE-9584-47EC-9918-D8D9CF4E965A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{2AD731BA-C2A8-478A-B870-B505971300DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{2AD731BA-C2A8-478A-B870-B505971300DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{0B8956AB-DF77-4E4D-9DA7-28E557631AA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{0B8956AB-DF77-4E4D-9DA7-28E557631AA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{061DC899-9AD8-4A65-8609-8F687FF8F2D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{061DC899-9AD8-4A65-8609-8F687FF8F2D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{CF97221A-3543-41DC-A140-FE5838D1D860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{061DC899-9AD8-4A65-8609-8F687FF8F2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{061DC899-9AD8-4A65-8609-8F687FF8F2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{061DC899-9AD8-4A65-8609-8F687FF8F2D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF97221A-3543-41DC-A140-FE5838D1D860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF97221A-3543-41DC-A140-FE5838D1D860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF97221A-3543-41DC-A140-FE5838D1D860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF97221A-3543-41DC-A140-FE5838D1D860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
