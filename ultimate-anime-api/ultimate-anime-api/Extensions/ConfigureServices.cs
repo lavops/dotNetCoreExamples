@@ -35,7 +35,8 @@ namespace ultimate_anime_api.Extensions
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<RepositoryContext>(opts =>
-                opts.UseSqlite(configuration.GetConnectionString("sqlConnection"))
+                opts.UseSqlite(configuration.GetConnectionString("sqlConnection"), b => 
+                b.MigrationsAssembly("ultimate-anime-api"))
             );
     }
 }
