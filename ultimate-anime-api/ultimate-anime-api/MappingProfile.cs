@@ -13,6 +13,7 @@ namespace ultimate_anime_api
         public MappingProfile()
         {
             CreateMap<Studio, StudioDto>().ForMember(s => s.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
+            CreateMap<Anime, AnimeDto>();
         }
     }
 }

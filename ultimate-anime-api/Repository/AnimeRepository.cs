@@ -15,5 +15,9 @@ namespace Repository
         {
 
         }
+
+        public IEnumerable<Anime> GetAnimes(Guid studioId, bool trackChanges) =>
+            FindByCondition(a => a.StudioId.Equals(studioId), trackChanges).OrderBy(a => a.Name);
+        
     }
 }
