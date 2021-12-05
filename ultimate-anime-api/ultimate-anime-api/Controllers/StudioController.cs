@@ -32,9 +32,25 @@ namespace ultimate_anime_api.Controllers
 
             var studiosDto = _mapper.Map<IEnumerable<StudioDto>>(studios);
 
-            throw new Exception("Exception");
-
             return Ok(studiosDto);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetStudio(Guid id)
+        {
+            var studio = _repository.Studio.GetStudio(id,trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+            else
+            {
+                var studioDto = _mapper.Map<StudioDto>(studio);
+
+                return Ok(studioDto);
+            }
+            
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Contracts
     public interface IStudioRepository
     {
         IEnumerable<Studio> GetAllStudios(bool trackChanges);
+        Studio GetStudio(Guid studioId, bool trackChanges);
     }
 }
