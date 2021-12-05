@@ -10,5 +10,6 @@ namespace Contracts
     public interface IAnimeRepository
     {
         IEnumerable<Anime> GetAnimes(Guid studioId, bool trackChanges);
+        Anime GetAnime(Guid studioId, Guid id, bool trackChanges);
     }
 }

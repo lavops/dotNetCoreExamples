@@ -41,5 +41,28 @@ namespace ultimate_anime_api.Controllers
                 return Ok(animeDto);
             }
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetAnimeForStudio(Guid studioId, Guid id)
+        {
+            var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
+                return NotFound();
+            }
+            else
+            {
+                var anime = _repository.Anime.GetAnime(studioId, id, trackChanges: false);
+                if(anime == null)
+                {
+                    _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
+                    return NotFound();
+                }
+                var animeDto = _mapper.Map<AnimeDto>(anime);
+
+                return Ok(animeDto);
+            }
+        }
     }
 }
