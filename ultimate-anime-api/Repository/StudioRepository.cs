@@ -24,5 +24,7 @@ namespace Repository
 
         public void CreateStudio(Studio studio) => Create(studio);
 
+        public IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            FindByCondition(x => ids.Contains(x.Id), trackChanges).ToList();
     }
 }

@@ -70,5 +70,48 @@ namespace ultimate_anime_api.Controllers
 
             return CreatedAtRoute("StudioById", new { id = studioToReturn.Id }, studioToReturn);
         }
+
+        [HttpGet("collection/({ids})", Name = "StudioCollection")]
+        public IActionResult GetStudioCollection(IEnumerable<Guid> ids)
+        {
+            if(ids == null)
+            {
+                _logger.LogError("Parameter ids is null.");
+                return BadRequest("Parameter ids is null.");
+            }
+
+            var studioEntities = _repository.Studio.GetByIds(ids, trackChanges: false);
+
+            if(ids.Count() != studioEntities.Count())
+            {
+                _logger.LogError("Some ids are not valid in a collection.");
+                return NotFound();
+            }
+
+            var studiosToReturn = _mapper.Map<IEnumerable<StudioDto>>(studioEntities);
+            return Ok(studiosToReturn);
+        }
+
+        [HttpPost("collection")]
+        public IActionResult CreateStudioCollection([FromBody] IEnumerable<StudioForCreationDto> studioCollection)
+        {
+            if(studioCollection == null)
+            {
+                _logger.LogError("Studio collection sent from client is null.");
+                return BadRequest("Studio collection is null.");
+            }
+
+            var studioEntities = _mapper.Map<IEnumerable<Studio>>(studioCollection);
+            foreach(var studio in studioEntities)
+            {
+                _repository.Studio.CreateStudio(studio);
+            }
+            _repository.Save();
+
+            var studioCollectionToReturn = _mapper.Map<IEnumerable<StudioDto>>(studioEntities);
+            var ids = string.Join(",", studioCollectionToReturn.Select(s => s.Id));
+
+            return CreatedAtRoute("StudioCollection", new { ids }, studioCollectionToReturn);
+        }
     }
 }

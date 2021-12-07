@@ -12,5 +12,6 @@ namespace Contracts
         IEnumerable<Studio> GetAllStudios(bool trackChanges);
         Studio GetStudio(Guid studioId, bool trackChanges);
         void CreateStudio(Studio studio);
+        IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
     }
 }
