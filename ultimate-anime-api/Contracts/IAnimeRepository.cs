@@ -11,5 +11,6 @@ namespace Contracts
     {
         IEnumerable<Anime> GetAnimes(Guid studioId, bool trackChanges);
         Anime GetAnime(Guid studioId, Guid id, bool trackChanges);
+        void CreateAnimeForStudio(Guid studioId, Anime anime);
     }
 }

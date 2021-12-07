@@ -22,5 +22,10 @@ namespace Repository
         public Anime GetAnime(Guid studioId, Guid id, bool trackChanges) =>
             FindByCondition(a => a.StudioId.Equals(studioId) && a.Id.Equals(id), trackChanges).SingleOrDefault();
 
+        public void CreateAnimeForStudio(Guid studioId, Anime anime)
+        {
+            anime.StudioId = studioId;
+            Create(anime);
+        }
     }
 }

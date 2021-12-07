@@ -18,6 +18,7 @@ namespace ultimate_anime_api
 
             // Post
             CreateMap<StudioForCreationDto, Studio>();
+            CreateMap<AnimeForCreationDto, Anime>();
         }
     }
 }
