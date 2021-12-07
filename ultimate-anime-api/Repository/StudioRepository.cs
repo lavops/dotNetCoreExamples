@@ -21,6 +21,8 @@ namespace Repository
 
         public Studio GetStudio(Guid studioId, bool trackChanges) =>
             FindByCondition(s => s.Id.Equals(studioId), trackChanges).SingleOrDefault();
-        
+
+        public void CreateStudio(Studio studio) => Create(studio);
+
     }
 }

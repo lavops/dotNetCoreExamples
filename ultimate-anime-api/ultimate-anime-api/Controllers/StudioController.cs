@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DTOs;
+using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,7 +36,7 @@ namespace ultimate_anime_api.Controllers
             return Ok(studiosDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "StudioById")]
         public IActionResult GetStudio(Guid id)
         {
             var studio = _repository.Studio.GetStudio(id,trackChanges: false);
@@ -50,7 +51,24 @@ namespace ultimate_anime_api.Controllers
 
                 return Ok(studioDto);
             }
-            
+        }
+
+        [HttpPost]
+        public IActionResult CreateStudio([FromBody] StudioForCreationDto studio)
+        {
+            if(studio == null)
+            {
+                _logger.LogError("StudioForCreationDto object sent from client is null.");
+                return BadRequest("StudioForCreationDto object is null.");
+            }
+
+            var studioEntity = _mapper.Map<Studio>(studio);
+            _repository.Studio.CreateStudio(studioEntity);
+            _repository.Save();
+
+            var studioToReturn = _mapper.Map<StudioDto>(studioEntity);
+
+            return CreatedAtRoute("StudioById", new { id = studioToReturn.Id }, studioToReturn);
         }
     }
 }
