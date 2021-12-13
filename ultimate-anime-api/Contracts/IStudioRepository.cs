@@ -13,5 +13,6 @@ namespace Contracts
         Studio GetStudio(Guid studioId, bool trackChanges);
         void CreateStudio(Studio studio);
         IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
+        void DeleteStudio(Studio studio);
     }
 }

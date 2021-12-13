@@ -115,5 +115,21 @@ namespace ultimate_anime_api.Controllers
 
             return CreatedAtRoute("StudioCollection", new { ids }, studioCollectionToReturn);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStudio(Guid id)
+        {
+            var studio = _repository.Studio.GetStudio(id, trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            _repository.Studio.DeleteStudio(studio);
+            _repository.Save();
+
+            return NoContent();
+        }
     }
 }

@@ -26,5 +26,10 @@ namespace Repository
 
         public IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
             FindByCondition(x => ids.Contains(x.Id), trackChanges).ToList();
+
+        public void DeleteStudio(Studio studio)
+        {
+            Delete(studio);
+        }
     }
 }
