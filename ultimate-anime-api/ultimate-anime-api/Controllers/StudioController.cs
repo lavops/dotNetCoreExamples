@@ -4,10 +4,12 @@ using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ultimate_anime_api.ModelBinders;
 
 namespace ultimate_anime_api.Controllers
 {
@@ -71,8 +73,8 @@ namespace ultimate_anime_api.Controllers
             return CreatedAtRoute("StudioById", new { id = studioToReturn.Id }, studioToReturn);
         }
 
-        [HttpGet("collection/({ids})", Name = "StudioCollection")]
-        public IActionResult GetStudioCollection(IEnumerable<Guid> ids)
+        [HttpGet("collection", Name = "StudioCollection")] // "collection/({ids})"
+        public IActionResult GetStudioCollection([FromQuery] IEnumerable<Guid> ids) // [ModelBinder(BinderType = typeof(ArrayModelBinder))]
         {
             if(ids == null)
             {
