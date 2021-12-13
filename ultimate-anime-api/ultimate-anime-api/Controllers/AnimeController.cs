@@ -89,5 +89,27 @@ namespace ultimate_anime_api.Controllers
             var animeToReturn = _mapper.Map<AnimeDto>(animeEntity);
             return CreatedAtRoute("GetAnimeForStudio", new { studioId, id = animeToReturn.Id }, animeToReturn);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAnimeForStudio(Guid studioId, Guid id)
+        {
+            var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
+                return NotFound();
+            }
+
+            var anime = _repository.Anime.GetAnime(studioId, id, trackChanges: false);
+            if (anime == null)
+            {
+                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+            _repository.Anime.DeleteAnime(anime);
+            _repository.Save();
+
+            return NoContent();
+        }
     }
 }

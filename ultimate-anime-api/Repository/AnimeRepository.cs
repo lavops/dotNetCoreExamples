@@ -27,5 +27,10 @@ namespace Repository
             anime.StudioId = studioId;
             Create(anime);
         }
+
+        public void DeleteAnime(Anime anime)
+        {
+            Delete(anime);
+        }
     }
 }
