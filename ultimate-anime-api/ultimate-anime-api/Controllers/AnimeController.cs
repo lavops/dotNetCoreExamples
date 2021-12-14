@@ -129,7 +129,7 @@ namespace ultimate_anime_api.Controllers
             }
 
             var animeEntity = _repository.Anime.GetAnime(studioId, id, trackChanges: true);
-            if (anime == null)
+            if (animeEntity == null)
             {
                 _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
                 return NotFound();

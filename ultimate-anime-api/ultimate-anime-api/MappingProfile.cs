@@ -22,6 +22,7 @@ namespace ultimate_anime_api
 
             // Put
             CreateMap<AnimeForUpdateDto, Anime>();
+            CreateMap<StudioForUpdateDto, Studio>();
         }
     }
 }
