@@ -21,7 +21,7 @@ namespace ultimate_anime_api
             CreateMap<AnimeForCreationDto, Anime>();
 
             // Put
-            CreateMap<AnimeForUpdateDto, Anime>();
+            CreateMap<AnimeForUpdateDto, Anime>().ReverseMap();
             CreateMap<StudioForUpdateDto, Studio>();
         }
     }

@@ -44,7 +44,8 @@ namespace ultimate_anime_api
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters()
+            }).AddNewtonsoftJson()
+              .AddXmlDataContractSerializerFormatters()
               .AddCustomCSVFormatter();
             services.AddSwaggerGen(c =>
             {

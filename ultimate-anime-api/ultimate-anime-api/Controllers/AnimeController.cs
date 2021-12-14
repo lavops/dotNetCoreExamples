@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -136,6 +137,37 @@ namespace ultimate_anime_api.Controllers
             }
 
             _mapper.Map(anime, animeEntity);
+            _repository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateAnimeForCompany(Guid studioId, Guid id, [FromBody]JsonPatchDocument<AnimeForUpdateDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                _logger.LogError("patchDoc object sent from client is null");
+                return BadRequest("patchDoc object is null");
+            }
+
+            var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
+                return NotFound();
+            }
+
+            var animeEntity = _repository.Anime.GetAnime(studioId, id, trackChanges: true);
+            if (animeEntity == null)
+            {
+                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            var animeToPatch = _mapper.Map<AnimeForUpdateDto>(animeEntity);
+            patchDoc.ApplyTo(animeToPatch);
+            _mapper.Map(animeToPatch, animeEntity);
             _repository.Save();
 
             return NoContent();
