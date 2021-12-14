@@ -111,5 +111,34 @@ namespace ultimate_anime_api.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateAnimeForStudio(Guid studioId, Guid id, [FromBody]AnimeForUpdateDto anime)
+        {
+            if(anime == null)
+            {
+                _logger.LogError("AnimeForUpdateDto object sent from client is null");
+                return BadRequest("AnimeForUpdateDto object is null");
+            }
+
+            var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
+            if (studio == null)
+            {
+                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
+                return NotFound();
+            }
+
+            var animeEntity = _repository.Anime.GetAnime(studioId, id, trackChanges: true);
+            if (anime == null)
+            {
+                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            _mapper.Map(anime, animeEntity);
+            _repository.Save();
+
+            return NoContent();
+        }
     }
 }
