@@ -45,6 +45,11 @@ namespace ultimate_anime_api
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;

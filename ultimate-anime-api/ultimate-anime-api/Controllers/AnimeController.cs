@@ -76,6 +76,12 @@ namespace ultimate_anime_api.Controllers
                 return BadRequest("AnimeForCreationDto object is null.");
             }
 
+            if(!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the AnimeForCreationDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
             if (studio == null)
             {
@@ -122,6 +128,12 @@ namespace ultimate_anime_api.Controllers
                 return BadRequest("AnimeForUpdateDto object is null");
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the AnimeForUpdateDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var studio = _repository.Studio.GetStudio(studioId, trackChanges: false);
             if (studio == null)
             {
@@ -166,7 +178,15 @@ namespace ultimate_anime_api.Controllers
             }
 
             var animeToPatch = _mapper.Map<AnimeForUpdateDto>(animeEntity);
-            patchDoc.ApplyTo(animeToPatch);
+            patchDoc.ApplyTo(animeToPatch, ModelState);
+
+            TryValidateModel(animeToPatch);
+
+            if(!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the patch document");
+                return UnprocessableEntity(ModelState);
+            }
             _mapper.Map(animeToPatch, animeEntity);
             _repository.Save();
 

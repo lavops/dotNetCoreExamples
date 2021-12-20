@@ -64,6 +64,12 @@ namespace ultimate_anime_api.Controllers
                 return BadRequest("StudioForCreationDto object is null.");
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the StudioForCreationDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var studioEntity = _mapper.Map<Studio>(studio);
             _repository.Studio.CreateStudio(studioEntity);
             _repository.Save();
@@ -139,6 +145,12 @@ namespace ultimate_anime_api.Controllers
             {
                 _logger.LogError("StudioForUpdateDto object sent from client is null");
                 return BadRequest("StudioForUpdateDto object is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the StudioForUpdateDto object");
+                return UnprocessableEntity(ModelState);
             }
 
             var studioEntity = _repository.Studio.GetStudio(id, trackChanges: false);
