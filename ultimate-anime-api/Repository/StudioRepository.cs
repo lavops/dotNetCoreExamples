@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,16 @@ namespace Repository
 
         }
 
-        public IEnumerable<Studio> GetAllStudios(bool trackChanges) =>
-            FindAll(trackChanges).OrderBy(s => s.Name).ToList();
+        public async Task<IEnumerable<Studio>> GetAllStudios(bool trackChanges) =>
+            await FindAll(trackChanges).OrderBy(s => s.Name).ToListAsync();
 
-        public Studio GetStudio(Guid studioId, bool trackChanges) =>
-            FindByCondition(s => s.Id.Equals(studioId), trackChanges).SingleOrDefault();
+        public async Task<Studio> GetStudio(Guid studioId, bool trackChanges) =>
+            await FindByCondition(s => s.Id.Equals(studioId), trackChanges).SingleOrDefaultAsync();
 
         public void CreateStudio(Studio studio) => Create(studio);
 
-        public IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
-            FindByCondition(x => ids.Contains(x.Id), trackChanges).ToList();
+        public async Task<IEnumerable<Studio>> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            await FindByCondition(x => ids.Contains(x.Id), trackChanges).ToListAsync();
 
         public void DeleteStudio(Studio studio)
         {

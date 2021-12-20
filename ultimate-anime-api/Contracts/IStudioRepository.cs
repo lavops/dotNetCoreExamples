@@ -9,10 +9,10 @@ namespace Contracts
 {
     public interface IStudioRepository
     {
-        IEnumerable<Studio> GetAllStudios(bool trackChanges);
-        Studio GetStudio(Guid studioId, bool trackChanges);
+        Task<IEnumerable<Studio>> GetAllStudios(bool trackChanges);
+        Task<Studio> GetStudio(Guid studioId, bool trackChanges);
         void CreateStudio(Studio studio);
-        IEnumerable<Studio> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
+        Task<IEnumerable<Studio>> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
         void DeleteStudio(Studio studio);
     }
 }

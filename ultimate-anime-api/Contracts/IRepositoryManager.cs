@@ -10,6 +10,6 @@ namespace Contracts
     {
         IStudioRepository Studio { get; }
         IAnimeRepository Anime { get; }
-        void Save();
+        Task Save();
     }
 }

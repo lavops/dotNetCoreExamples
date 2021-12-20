@@ -29,9 +29,9 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetStudios()
+        public async Task<IActionResult> GetStudios()
         {
-            var studios = _repository.Studio.GetAllStudios(trackChanges: false);
+            var studios = await _repository.Studio.GetAllStudios(trackChanges: false);
 
             var studiosDto = _mapper.Map<IEnumerable<StudioDto>>(studios);
 
@@ -39,9 +39,9 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpGet("{id}", Name = "StudioById")]
-        public IActionResult GetStudio(Guid id)
+        public async Task<IActionResult> GetStudio(Guid id)
         {
-            var studio = _repository.Studio.GetStudio(id,trackChanges: false);
+            var studio = await _repository.Studio.GetStudio(id,trackChanges: false);
             if (studio == null)
             {
                 _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
@@ -56,7 +56,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateStudio([FromBody] StudioForCreationDto studio)
+        public async Task<IActionResult> CreateStudio([FromBody] StudioForCreationDto studio)
         {
             if(studio == null)
             {
@@ -72,7 +72,7 @@ namespace ultimate_anime_api.Controllers
 
             var studioEntity = _mapper.Map<Studio>(studio);
             _repository.Studio.CreateStudio(studioEntity);
-            _repository.Save();
+            await _repository.Save();
 
             var studioToReturn = _mapper.Map<StudioDto>(studioEntity);
 
@@ -80,7 +80,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpGet("collection", Name = "StudioCollection")] // "collection/({ids})"
-        public IActionResult GetStudioCollection([FromQuery] IEnumerable<Guid> ids) // [ModelBinder(BinderType = typeof(ArrayModelBinder))]
+        public async Task<IActionResult> GetStudioCollection([FromQuery] IEnumerable<Guid> ids) // [ModelBinder(BinderType = typeof(ArrayModelBinder))]
         {
             if(ids == null)
             {
@@ -88,7 +88,7 @@ namespace ultimate_anime_api.Controllers
                 return BadRequest("Parameter ids is null.");
             }
 
-            var studioEntities = _repository.Studio.GetByIds(ids, trackChanges: false);
+            var studioEntities = await _repository.Studio.GetByIds(ids, trackChanges: false);
 
             if(ids.Count() != studioEntities.Count())
             {
@@ -101,7 +101,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpPost("collection")]
-        public IActionResult CreateStudioCollection([FromBody] IEnumerable<StudioForCreationDto> studioCollection)
+        public async Task<IActionResult> CreateStudioCollection([FromBody] IEnumerable<StudioForCreationDto> studioCollection)
         {
             if(studioCollection == null)
             {
@@ -114,7 +114,7 @@ namespace ultimate_anime_api.Controllers
             {
                 _repository.Studio.CreateStudio(studio);
             }
-            _repository.Save();
+            await _repository.Save();
 
             var studioCollectionToReturn = _mapper.Map<IEnumerable<StudioDto>>(studioEntities);
             var ids = string.Join(",", studioCollectionToReturn.Select(s => s.Id));
@@ -123,9 +123,9 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteStudio(Guid id)
+        public async Task<IActionResult> DeleteStudio(Guid id)
         {
-            var studio = _repository.Studio.GetStudio(id, trackChanges: false);
+            var studio = await _repository.Studio.GetStudio(id, trackChanges: false);
             if (studio == null)
             {
                 _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
@@ -133,13 +133,13 @@ namespace ultimate_anime_api.Controllers
             }
 
             _repository.Studio.DeleteStudio(studio);
-            _repository.Save();
+            await _repository.Save();
 
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateStudio(Guid id, [FromBody]StudioForUpdateDto studio)
+        public async Task<IActionResult> UpdateStudio(Guid id, [FromBody]StudioForUpdateDto studio)
         {
             if(studio == null)
             {
@@ -153,7 +153,7 @@ namespace ultimate_anime_api.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var studioEntity = _repository.Studio.GetStudio(id, trackChanges: false);
+            var studioEntity = await _repository.Studio.GetStudio(id, trackChanges: false);
             if (studioEntity == null)
             {
                 _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
@@ -161,7 +161,7 @@ namespace ultimate_anime_api.Controllers
             }
 
             _mapper.Map(studio, studioEntity);
-            _repository.Save();
+            await _repository.Save();
 
             return NoContent();
         }
