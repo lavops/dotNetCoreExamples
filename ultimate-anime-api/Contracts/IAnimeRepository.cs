@@ -9,8 +9,8 @@ namespace Contracts
 {
     public interface IAnimeRepository
     {
-        IEnumerable<Anime> GetAnimes(Guid studioId, bool trackChanges);
-        Anime GetAnime(Guid studioId, Guid id, bool trackChanges);
+        Task<IEnumerable<Anime>> GetAnimes(Guid studioId, bool trackChanges);
+        Task<Anime> GetAnime(Guid studioId, Guid id, bool trackChanges);
         void CreateAnimeForStudio(Guid studioId, Anime anime);
         void DeleteAnime(Anime anime);
     }

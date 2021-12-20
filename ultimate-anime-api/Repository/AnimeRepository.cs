@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,11 @@ namespace Repository
 
         }
         
-        public IEnumerable<Anime> GetAnimes(Guid studioId, bool trackChanges) =>
-            FindByCondition(a => a.StudioId.Equals(studioId), trackChanges).OrderBy(a => a.Name);
+        public async Task<IEnumerable<Anime>> GetAnimes(Guid studioId, bool trackChanges) =>
+            await FindByCondition(a => a.StudioId.Equals(studioId), trackChanges).OrderBy(a => a.Name).ToListAsync();
 
-        public Anime GetAnime(Guid studioId, Guid id, bool trackChanges) =>
-            FindByCondition(a => a.StudioId.Equals(studioId) && a.Id.Equals(id), trackChanges).SingleOrDefault();
+        public async Task<Anime> GetAnime(Guid studioId, Guid id, bool trackChanges) =>
+            await FindByCondition(a => a.StudioId.Equals(studioId) && a.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 
         public void CreateAnimeForStudio(Guid studioId, Anime anime)
         {
