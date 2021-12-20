@@ -32,6 +32,11 @@ namespace ultimate_anime_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (!Directory.Exists(Configuration["workingDir"]))
+            {
+                Directory.CreateDirectory(Configuration["workingDir"]);
+            }
+
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
