@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ultimate_anime_api.ActionFilters;
 using ultimate_anime_api.Extensions;
 
 namespace ultimate_anime_api
@@ -44,6 +45,8 @@ namespace ultimate_anime_api
             services.ConfigureRepositoryManager();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped<ValidationFilterAttribute>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

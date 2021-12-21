@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ultimate_anime_api.ActionFilters;
 using ultimate_anime_api.ModelBinders;
 
 namespace ultimate_anime_api.Controllers
@@ -56,6 +57,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateStudio([FromBody] StudioForCreationDto studio)
         {
             if(studio == null)
@@ -139,6 +141,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateStudio(Guid id, [FromBody]StudioForUpdateDto studio)
         {
             if(studio == null)
