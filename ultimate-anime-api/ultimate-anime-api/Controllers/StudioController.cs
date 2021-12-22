@@ -60,18 +60,6 @@ namespace ultimate_anime_api.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateStudio([FromBody] StudioForCreationDto studio)
         {
-            if(studio == null)
-            {
-                _logger.LogError("StudioForCreationDto object sent from client is null.");
-                return BadRequest("StudioForCreationDto object is null.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the StudioForCreationDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var studioEntity = _mapper.Map<Studio>(studio);
             _repository.Studio.CreateStudio(studioEntity);
             await _repository.Save();
@@ -125,14 +113,10 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidateStudioExistsAtribute))]
         public async Task<IActionResult> DeleteStudio(Guid id)
         {
-            var studio = await _repository.Studio.GetStudio(id, trackChanges: false);
-            if (studio == null)
-            {
-                _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
-                return NotFound();
-            }
+            var studio = HttpContext.Items["studio"] as Studio;
 
             _repository.Studio.DeleteStudio(studio);
             await _repository.Save();
@@ -142,26 +126,10 @@ namespace ultimate_anime_api.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateStudioExistsAtribute))]
         public async Task<IActionResult> UpdateStudio(Guid id, [FromBody]StudioForUpdateDto studio)
         {
-            if(studio == null)
-            {
-                _logger.LogError("StudioForUpdateDto object sent from client is null");
-                return BadRequest("StudioForUpdateDto object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the StudioForUpdateDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
-            var studioEntity = await _repository.Studio.GetStudio(id, trackChanges: false);
-            if (studioEntity == null)
-            {
-                _logger.LogInfo($"Studio with id: {id} doesn't exist in the database");
-                return NotFound();
-            }
+            var studioEntity = HttpContext.Items["studio"] as Studio;
 
             _mapper.Map(studio, studioEntity);
             await _repository.Save();

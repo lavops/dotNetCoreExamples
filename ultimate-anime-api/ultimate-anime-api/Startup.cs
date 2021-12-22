@@ -46,7 +46,9 @@ namespace ultimate_anime_api
 
             services.AddAutoMapper(typeof(Startup));
 
+            // Action Filters
             services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateStudioExistsAtribute>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
