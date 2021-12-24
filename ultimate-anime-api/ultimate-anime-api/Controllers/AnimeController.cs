@@ -100,21 +100,10 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidateAnimeForStudioExistsAtribute))]
         public async Task<IActionResult> DeleteAnimeForStudio(Guid studioId, Guid id)
         {
-            var studio = await _repository.Studio.GetStudio(studioId, trackChanges: false);
-            if (studio == null)
-            {
-                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
-                return NotFound();
-            }
-
-            var anime = await _repository.Anime.GetAnime(studioId, id, trackChanges: false);
-            if (anime == null)
-            {
-                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
-                return NotFound();
-            }
+            var anime = HttpContext.Items["anime"] as Anime;
             _repository.Anime.DeleteAnime(anime);
             await _repository.Save();
 
@@ -123,34 +112,10 @@ namespace ultimate_anime_api.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateAnimeForStudioExistsAtribute))]
         public async Task<IActionResult> UpdateAnimeForStudio(Guid studioId, Guid id, [FromBody]AnimeForUpdateDto anime)
         {
-            if(anime == null)
-            {
-                _logger.LogError("AnimeForUpdateDto object sent from client is null");
-                return BadRequest("AnimeForUpdateDto object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the AnimeForUpdateDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
-            var studio = await _repository.Studio.GetStudio(studioId, trackChanges: false);
-            if (studio == null)
-            {
-                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
-                return NotFound();
-            }
-
-            var animeEntity = await _repository.Anime.GetAnime(studioId, id, trackChanges: true);
-            if (animeEntity == null)
-            {
-                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
-                return NotFound();
-            }
-
+            var animeEntity = HttpContext.Items["anime"] as Anime;
             _mapper.Map(anime, animeEntity);
             await _repository.Save();
 
@@ -158,6 +123,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [ServiceFilter(typeof(ValidateAnimeForStudioExistsAtribute))]
         public async Task<IActionResult> PartiallyUpdateAnimeForCompany(Guid studioId, Guid id, [FromBody]JsonPatchDocument<AnimeForUpdateDto> patchDoc)
         {
             if (patchDoc == null)
@@ -166,19 +132,7 @@ namespace ultimate_anime_api.Controllers
                 return BadRequest("patchDoc object is null");
             }
 
-            var studio = await _repository.Studio.GetStudio(studioId, trackChanges: false);
-            if (studio == null)
-            {
-                _logger.LogInfo($"Studio with id: {studioId} doesn't exist in the database");
-                return NotFound();
-            }
-
-            var animeEntity = await _repository.Anime.GetAnime(studioId, id, trackChanges: true);
-            if (animeEntity == null)
-            {
-                _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
-                return NotFound();
-            }
+            var animeEntity = HttpContext.Items["anime"] as Anime;
 
             var animeToPatch = _mapper.Map<AnimeForUpdateDto>(animeEntity);
             patchDoc.ApplyTo(animeToPatch, ModelState);
