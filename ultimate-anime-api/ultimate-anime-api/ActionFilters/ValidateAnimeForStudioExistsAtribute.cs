@@ -33,7 +33,7 @@ namespace ultimate_anime_api.ActionFilters
             }
 
             var id = (Guid)context.ActionArguments["id"];
-            var anime = await _repository.Anime.GetAnime(studioId, id, trackChanges);
+            var anime = await _repository.Anime.GetAnimeAsync(studioId, id, trackChanges);
 
             if(anime == null)
             {

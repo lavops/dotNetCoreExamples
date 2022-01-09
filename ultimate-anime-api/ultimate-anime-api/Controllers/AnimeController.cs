@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace ultimate_anime_api.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAnimeForStudio(Guid studioId)
+        public async Task<IActionResult> GetAnimeForStudio(Guid studioId, [FromQuery] AnimeParameters animeParameters )
         {
             var studio = await _repository.Studio.GetStudio(studioId, trackChanges: false);
             if(studio == null)
@@ -38,7 +39,7 @@ namespace ultimate_anime_api.Controllers
                 return NotFound();
             } else
             {
-                var anime = await _repository.Anime.GetAnimes(studioId, trackChanges: false);
+                var anime = await _repository.Anime.GetAnimesAsync(studioId, animeParameters, trackChanges: false);
                 var animeDto = _mapper.Map<IEnumerable<AnimeDto>>(anime);
 
                 return Ok(animeDto);
@@ -56,7 +57,7 @@ namespace ultimate_anime_api.Controllers
             }
             else
             {
-                var anime = await _repository.Anime.GetAnime(studioId, id, trackChanges: false);
+                var anime = await _repository.Anime.GetAnimeAsync(studioId, id, trackChanges: false);
                 if(anime == null)
                 {
                     _logger.LogInfo($"Anime with id: {id} doesn't exist in the database");
