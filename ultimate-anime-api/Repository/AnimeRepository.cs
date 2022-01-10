@@ -18,12 +18,13 @@ namespace Repository
 
         }
         
-        public async Task<IEnumerable<Anime>> GetAnimesAsync(Guid studioId, AnimeParameters animeParameters, bool trackChanges) =>
-            await FindByCondition(a => a.StudioId.Equals(studioId), trackChanges)
-            .OrderBy(a => a.Name)
-            .Skip((animeParameters.PageNumber - 1) * animeParameters.PageSize)
-            .Take(animeParameters.PageSize)
-            .ToListAsync();
+        public async Task<PagedList<Anime>> GetAnimesAsync(Guid studioId, AnimeParameters animeParameters, bool trackChanges)
+        {
+            var anime = await FindByCondition(a => a.StudioId.Equals(studioId), trackChanges).OrderBy(a => a.Name).ToListAsync();
+
+            return PagedList<Anime>.ToPagedList(anime, animeParameters.PageNumber, animeParameters.PageSize);
+        }
+            
 
         public async Task<Anime> GetAnimeAsync(Guid studioId, Guid id, bool trackChanges) =>
             await FindByCondition(a => a.StudioId.Equals(studioId) && a.Id.Equals(id), trackChanges).SingleOrDefaultAsync();

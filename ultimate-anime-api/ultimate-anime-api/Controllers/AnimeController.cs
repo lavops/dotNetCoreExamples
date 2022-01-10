@@ -6,6 +6,7 @@ using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace ultimate_anime_api.Controllers
             } else
             {
                 var anime = await _repository.Anime.GetAnimesAsync(studioId, animeParameters, trackChanges: false);
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(anime.MetaData));
                 var animeDto = _mapper.Map<IEnumerable<AnimeDto>>(anime);
 
                 return Ok(animeDto);
