@@ -33,6 +33,9 @@ namespace ultimate_anime_api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAnimeForStudio(Guid studioId, [FromQuery] AnimeParameters animeParameters )
         {
+            if (!animeParameters.ValidDateRange)
+                return BadRequest("Max date can't be less than min date");
+
             var studio = await _repository.Studio.GetStudio(studioId, trackChanges: false);
             if(studio == null)
             {

@@ -20,7 +20,8 @@ namespace Repository
         
         public async Task<PagedList<Anime>> GetAnimesAsync(Guid studioId, AnimeParameters animeParameters, bool trackChanges)
         {
-            var anime = await FindByCondition(a => a.StudioId.Equals(studioId), trackChanges).OrderBy(a => a.Name).ToListAsync();
+            var anime = await FindByCondition(a => a.StudioId.Equals(studioId) && (a.ReleaseDate >= animeParameters.MinDate && a.ReleaseDate <= animeParameters.MaxDate), trackChanges)
+                .OrderBy(a => a.Name).ToListAsync();
 
             return PagedList<Anime>.ToPagedList(anime, animeParameters.PageNumber, animeParameters.PageSize);
         }
