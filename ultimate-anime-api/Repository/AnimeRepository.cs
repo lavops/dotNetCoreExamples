@@ -24,7 +24,8 @@ namespace Repository
             var anime = await FindByCondition(a => a.StudioId.Equals(studioId), trackChanges)
                 .FilterAnime(animeParameters.MinDate, animeParameters.MaxDate)
                 .Search(animeParameters.SearchTerm)
-                .OrderBy(a => a.Name).ToListAsync();
+                .Sort(animeParameters.OrderBy)
+                .ToListAsync();
 
             return PagedList<Anime>.ToPagedList(anime, animeParameters.PageNumber, animeParameters.PageSize);
         }

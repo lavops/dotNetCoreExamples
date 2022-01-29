@@ -8,6 +8,11 @@ namespace Entities.RequestFeatures
 {
     public class AnimeParameters : RequestParameters
     {
+        public AnimeParameters()
+        {
+            OrderBy = "name";
+        }
+
         public DateTime MinDate { get; set; } = new DateTime();
         public DateTime MaxDate { get; set; } = DateTime.Now;
         public bool ValidDateRange => MaxDate > MinDate;
