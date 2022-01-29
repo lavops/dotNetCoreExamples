@@ -22,14 +22,16 @@ namespace ultimate_anime_api.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IDataShaper<AnimeDto> _dataShaper;
 
-        public AnimeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public AnimeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<AnimeDto> dataShaper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _dataShaper = dataShaper;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAnimeForStudio(Guid studioId, [FromQuery] AnimeParameters animeParameters )
         {
@@ -47,7 +49,7 @@ namespace ultimate_anime_api.Controllers
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(anime.MetaData));
                 var animeDto = _mapper.Map<IEnumerable<AnimeDto>>(anime);
 
-                return Ok(animeDto);
+                return Ok(_dataShaper.ShapeData(animeDto, animeParameters.Fields));
             }
         }
 

@@ -1,4 +1,5 @@
 using Contracts;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NLog;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,6 +52,9 @@ namespace ultimate_anime_api
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateStudioExistsAtribute>();
             services.AddScoped<ValidateAnimeForStudioExistsAtribute>();
+
+            // DataShaper
+            services.AddScoped<IDataShaper<AnimeDto>, DataShaper<AnimeDto>>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
