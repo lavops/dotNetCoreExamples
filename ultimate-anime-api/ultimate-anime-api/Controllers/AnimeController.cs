@@ -33,6 +33,7 @@ namespace ultimate_anime_api.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAnimeForStudio(Guid studioId, [FromQuery] AnimeParameters animeParameters )
         {
             if (!animeParameters.ValidDateRange)

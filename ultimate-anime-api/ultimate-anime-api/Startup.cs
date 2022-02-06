@@ -52,6 +52,7 @@ namespace ultimate_anime_api
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateStudioExistsAtribute>();
             services.AddScoped<ValidateAnimeForStudioExistsAtribute>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
 
             // DataShaper
             services.AddScoped<IDataShaper<AnimeDto>, DataShaper<AnimeDto>>();
@@ -68,6 +69,9 @@ namespace ultimate_anime_api
             }).AddNewtonsoftJson()
               .AddXmlDataContractSerializerFormatters()
               .AddCustomCSVFormatter();
+
+            services.AddCustomMediaTypes();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ultimate_anime_api", Version = "v1" });
