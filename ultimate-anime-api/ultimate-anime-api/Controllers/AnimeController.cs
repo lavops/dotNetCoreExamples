@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ultimate_anime_api.ActionFilters;
+using ultimate_anime_api.Utility;
 
 namespace ultimate_anime_api.Controllers
 {
@@ -23,13 +24,15 @@ namespace ultimate_anime_api.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IDataShaper<AnimeDto> _dataShaper;
+        private readonly AnimeLinks _animeLinks;
 
-        public AnimeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<AnimeDto> dataShaper)
+        public AnimeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<AnimeDto> dataShaper, AnimeLinks animeLinks)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _dataShaper = dataShaper;
+            _animeLinks = animeLinks;
         }
 
         [HttpGet]
@@ -50,6 +53,9 @@ namespace ultimate_anime_api.Controllers
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(anime.MetaData));
                 var animeDto = _mapper.Map<IEnumerable<AnimeDto>>(anime);
 
+                // var links = _animeLinks.TryGenerateLinks(animeDto, animeParameters.Fields, studioId, HttpContext);
+
+                // return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
                 return Ok(_dataShaper.ShapeData(animeDto, animeParameters.Fields));
             }
         }

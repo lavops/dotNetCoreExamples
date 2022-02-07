@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ultimate_anime_api.ActionFilters;
 using ultimate_anime_api.Extensions;
+using ultimate_anime_api.Utility;
 
 namespace ultimate_anime_api
 {
@@ -56,6 +57,9 @@ namespace ultimate_anime_api
 
             // DataShaper
             services.AddScoped<IDataShaper<AnimeDto>, DataShaper<AnimeDto>>();
+
+            // Hateoas
+            services.AddScoped<AnimeLinks>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
